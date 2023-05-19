@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">StoreSmkn1Gending</string>
+    <string name="logintext">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="fullname">Nama Lengkap</string>
+    <string name="address">Alamat</string>
+    <string name="phone">Nomor Hp</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email">Email</string>
+
+
+</resources>
