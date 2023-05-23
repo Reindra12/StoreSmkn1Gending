@@ -7,6 +7,23 @@
     <string name="phone">Nomor Hp</string>
     <string name="password">Kata Sandi</string>
     <string name="email">Email</string>
+    <string name="title_activity_bottom_navigation">bottomNavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_forum">Forum</string>
+    <string name="title_mycart">My Cart</string>
+    <string name="emailEmpty">Email tidak boleh kosong</string>
+    <string name="passwordEmpty">Kata Sandi tidak boleh kosong</string>
+    <string name="title">Nama Produk\n</string>
+    <string name="discription">Diskripsi produk\n</string>
+    <string name="search_here">Search here\n</string>
+    <string name="location">Lokasi</string>
+    <string name="remove">Remove</string>
+    <string name="addMyCart">Add to My Cart</string>
 
 
 </resources>

@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.util.Log
-import com.example.storesmkn1gending.MainActivity
+import com.example.storesmkn1gending.LoginActivity
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -20,7 +20,7 @@ class RegisterAsyncTask(private val context: Context) : AsyncTask<String, Void, 
 
     private val REGISTER_URL =
         "https://market-final-project.herokuapp.com/auth/register" // Ganti dengan URL registrasi yang sesuai
-
+//       "https://10.0.2.2:5000/Api/Users"
     private lateinit var progressDialog: ProgressDialog
 
     override fun onPreExecute() {
@@ -32,21 +32,21 @@ class RegisterAsyncTask(private val context: Context) : AsyncTask<String, Void, 
     }
 
     override fun doInBackground(vararg params: String): String {
-        val fullName = params[0]
+        val name = params[0]
         val email = params[1]
         val password = params[2]
-        val phoneNumber = params[3]
-        val address = params[4]
+//        val phoneNumber = params[3]
+//        val address = params[4]
 //        val city = params[5]
 
         // Membuat objek JSON yang berisi data registrasi
         val postData = JSONObject()
         try {
-            postData.put("full_name", fullName)
+            postData.put("name", name)
             postData.put("email", email)
             postData.put("password", password)
-            postData.put("phone_number", phoneNumber)
-            postData.put("address", address)
+//            postData.put("phone_number", phoneNumber)
+//            postData.put("address", address)
 //            postData.put("city", city)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -87,10 +87,10 @@ class RegisterAsyncTask(private val context: Context) : AsyncTask<String, Void, 
 
         try {
             val jsonResponse = JSONObject(result)
-            val id = jsonResponse.getInt("id")
-            val fullName = jsonResponse.getString("full_name")
+//            val id = jsonResponse.getInt("id")
+            val fullName = jsonResponse.getString("name")
             val email = jsonResponse.getString("email")
-            val phoneNumber = jsonResponse.getString("phone_number")
+//            val phoneNumber = jsonResponse.getString("phone_number")
             val password = jsonResponse.getString("password")
 
             navigateToMainActivity(email, password)
@@ -105,7 +105,7 @@ class RegisterAsyncTask(private val context: Context) : AsyncTask<String, Void, 
     }
 
     private fun navigateToMainActivity(email: String, password: String) {
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java)
         intent.putExtra("email", email)
         intent.putExtra("password", password)
         context.startActivity(intent)

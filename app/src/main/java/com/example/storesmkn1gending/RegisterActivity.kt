@@ -1,17 +1,34 @@
 package com.example.storesmkn1gending
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.service.autofill.UserData
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.example.storesmkn1gending.databinding.ActivityRegisterBinding
 import com.example.storesmkn1gending.network.RegisterAsyncTask
+import com.example.storesmkn1gending.network.RegisterAsyncTask2
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 
 class RegisterActivity : AppCompatActivity() {
     lateinit var binding: ActivityRegisterBinding
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -26,13 +43,90 @@ class RegisterActivity : AppCompatActivity() {
             val address = binding.addressEdt.text.toString().trim()
 
             if (CheckingData(fullname, email, password, phone, address)) {
-                RegisterAsyncTask(this).execute(fullname, email, password, phone, address)
-                if (fullname.equals("roby")){
-                    Toast.makeText(this, "benar roby", Toast.LENGTH_SHORT).show()
-                }
+                registerAsyncTask(this).execute(fullname, email, password, phone, address)
+
+//                RegisterAsyncTask2(this).execute(fullname, email, password)
             }
         }
     }
+
+    private class registerAsyncTask(private val context: Context) :
+        AsyncTask<String, Void, String>() {
+        private val restApi = "https://market-final-project.herokuapp.com/auth/register"
+
+        override fun doInBackground(vararg params: String?): String {
+            val name = params[0]
+            val email = params[1]
+            val password = params[2]
+            val phoneNumber = params[3]
+            val address = params[4]
+
+
+            val request = JSONObject()
+            try {
+                request.put("full_name", name)
+                request.put("email", email)
+                request.put("password", password)
+                request.put("phone_number", phoneNumber)
+                request.put("address", address)
+
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            var response = ""
+            try {
+                val url = URL(restApi)
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "POST"
+                conn.setRequestProperty("Content-Type", "application/json")
+                conn.doOutput = true
+
+                val write = OutputStreamWriter(conn.outputStream)
+                write.write(request.toString())
+                write.flush()
+
+                val reader = BufferedReader(InputStreamReader(conn.inputStream))
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    response += line
+
+                }
+
+                write.close()
+                reader.close()
+                conn.disconnect()
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+            return response
+        }
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+        }
+
+        override fun onPostExecute(result: String?) {
+            try {
+                Log.d("TAG", "onPostExecute: " + result)
+                val response = JSONObject(result)
+                val email = response.getString("email")
+                goToLogin(email)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                Log.d("TAG", "onPostExecute: " + result)
+            }
+        }
+
+        private fun goToLogin(email: String) {
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra("email", email)
+            context.startActivity(intent)
+            (context as Activity).finish()
+        }
+
+
+    }
+
 
     private fun CheckingData(
         fullname: String, email: String, password: String, phone: String, address: String
@@ -47,7 +141,7 @@ class RegisterActivity : AppCompatActivity() {
             return false
         }
         if (password.isEmpty()) {
-            setEmailError("Password tidak boleh kosong")
+            setPasswordError("Password tidak boleh kosong")
             return false
         }
         if (phone.isEmpty()) {

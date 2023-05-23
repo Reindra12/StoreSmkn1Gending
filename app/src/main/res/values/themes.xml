@@ -3,7 +3,18 @@
     <style name="Base.Theme.StoreSmkn1Gending" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
 
+
     <style name="Theme.StoreSmkn1Gending" parent="Base.Theme.StoreSmkn1Gending" />
+
+<!--    <style name="Theme" parent="Theme.AppCompat.DayNight.DarkActionBar">-->
+<!--        &lt;!&ndash; Customize your light theme here. &ndash;&gt;-->
+<!--        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;-->
+<!--    </style>-->
+
+    <style name="Base.Theme.AppCompat.Baru" parent="Theme.AppCompat.DayNight.DarkActionBar"/>
+
 </resources>
